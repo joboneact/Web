@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SPA Sortable User Table</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { cursor: pointer; background: #f4f4f4; }
+        th.sorted-asc::after { content: " ▲"; }
+        th.sorted-desc::after { content: " ▼"; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        input, select { margin: 0.5em 0; padding: 0.3em; }
+        .form-row { margin-bottom: 1em; }
+    </style>
+</head>
+<body>
+    <h2>Sortable User Table (SPA)</h2>
+    <form id="userForm">
+        <div class="form-row">
+            <input type="text" id="name" placeholder="Name" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="tel" id="phone" placeholder="Phone" required>
+            <input type="text" id="city" placeholder="City" required>
+            <select id="timezone" required>
+                <option value="">Time Zone</option>
+                <option value="PST">PST</option>
+                <option value="MST">MST</option>
+                <option value="CST">CST</option>
+                <option value="EST">EST</option>
+                <option value="UTC">UTC</option>
+            </select>
+            <button type="submit">Add User</button>
+        </div>
+    </form>
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th data-col="name">Name</th>
+                <th data-col="email">Email</th>
+                <th data-col="phone">Phone</th>
+                <th data-col="city">City</th>
+                <th data-col="timezone">Time Zone</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Rows will be rendered here -->
+        </tbody>
+    </table>
+    <script>
+        // Sample users
+        let users = [
+            { name: "Alice Smith", email: "alice@example.com", phone: "555-1234", city: "Seattle", timezone: "PST" },
+            { name: "Bob Johnson", email: "bob@example.com", phone: "555-5678", city: "Denver", timezone: "MST" },
+            { name: "Carol Lee", email: "carol@example.com", phone: "555-8765", city: "Chicago", timezone: "CST" },
+            { name: "David Kim", email: "david@example.com", phone: "555-4321", city: "New York", timezone: "EST" },
+            { name: "Eve Turner", email: "eve@example.com", phone: "555-2468", city: "London", timezone: "UTC" }
+        ];
+
+        let sortCol = null;
+        let sortDir = 1; // 1 = asc, -1 = desc
+
+        function renderTable() {
+            const tbody = document.querySelector("#userTable tbody");
+            tbody.innerHTML = "";
+            users.forEach(user => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td>${user.phone}</td>
+                    <td>${user.city}</td>
+                    <td>${user.timezone}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function sortTable(col) {
+            if (sortCol === col) {
+                sortDir *= -1;
+            } else {
+                sortCol = col;
+                sortDir = 1;
+            }
+            users.sort((a, b) => {
+                if (a[col] < b[col]) return -1 * sortDir;
+                if (a[col] > b[col]) return 1 * sortDir;
+                return 0;
+            });
+            updateSortIndicators();
+            renderTable();
+        }
+
+        function updateSortIndicators() {
+            document.querySelectorAll("#userTable th").forEach(th => {
+                th.classList.remove("sorted-asc", "sorted-desc");
+                if (th.dataset.col === sortCol) {
+                    th.classList.add(sortDir === 1 ? "sorted-asc" : "sorted-desc");
+                }
+            });
+        }
+
+        document.querySelectorAll("#userTable th").forEach(th => {
+            th.addEventListener("click", () => sortTable(th.dataset.col));
+        });
+
+        document.getElementById("userForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const phone = document.getElementById("phone").value.trim();
+            const city = document.getElementById("city").value.trim();
+            const timezone = document.getElementById("timezone").value;
+            if (name && email && phone && city && timezone) {
+                users.push({ name, email, phone, city, timezone });
+                renderTable();
+                this.reset();
+            }
+        });
+
+        // Initial render
+        renderTable();
+    </script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web Color Palette Table</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        table { border-collapse: collapse; width: 100%; max-width: 700px; margin: auto; }
+        th, td { border: 1px solid #ddd; padding: 16px; text-align: center; font-weight: bold; color: #222; }
+        th { background: #f4f4f4; }
+        .color-cell { color: #fff; }
+        @media (max-width: 700px) {
+            table, thead, tbody, th, td, tr { display: block; width: 100%; }
+            thead tr { display: none; }
+            tr { margin-bottom: 1em; border: 1px solid #ccc; }
+            td { border: none; border-bottom: 1px solid #eee; position: relative; padding-left: 50%; }
+            td:before { position: absolute; left: 0; width: 45%; padding-left: 10px; font-weight: bold; white-space: nowrap; color: #222; }
+        }
+    </style>
+</head>
+<body>
+    <h2>Web Color Palette Table</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Red</th>
+                <th>Orange</th>
+                <th>Yellow</th>
+                <th>Green</th>
+                <th>Blue</th>
+                <th>Purple</th>
+                <th>Pink</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="color-cell" style="background: #e74c3c;">#e74c3c</td>
+                <td class="color-cell" style="background: #e67e22;">#e67e22</td>
+                <td class="color-cell" style="background: #f1c40f; color: #222;">#f1c40f</td>
+                <td class="color-cell" style="background: #27ae60;">#27ae60</td>
+                <td class="color-cell" style="background: #3498db;">#3498db</td>
+                <td class="color-cell" style="background: #9b59b6;">#9b59b6</td>
+                <td class="color-cell" style="background: #fd79a8;">#fd79a8</td>
+            </tr>
+            <tr>
+                <td class="color-cell" style="background: #c0392b;">#c0392b</td>
+                <td class="color-cell" style="background: #ffb347; color: #222;">#ffb347</td>
+                <td class="color-cell" style="background: #fff200; color: #222;">#fff200</td>
+                <td class="color-cell" style="background: #2ecc71;">#2ecc71</td>
+                <td class="color-cell" style="background: #2980b9;">#2980b9</td>
+                <td class="color-cell" style="background: #8e44ad;">#8e44ad</td>
+                <td class="color-cell" style="background: #e84393;">#e84393</td>
+            </tr>
+            <tr>
+                <td class="color-cell" style="background: #ff7675; color: #222;">#ff7675</td>
+                <td class="color-cell" style="background: #f6e58d; color: #222;">#f6e58d</td>
+                <td class="color-cell" style="background: #ffeaa7; color: #222;">#ffeaa7</td>
+                <td class="color-cell" style="background: #00b894;">#00b894</td>
+                <td class="color-cell" style="background: #00cec9;">#00cec9</td>
+                <td class="color-cell" style="background: #6c5ce7;">#6c5ce7</td>
+                <td class="color-cell" style="background: #fab1a0; color: #222;">#fab1a0</td>
+            </tr>
+        </tbody>
+    </table>
+    <h2>Web Color Palette Table (No Styles)</h2>
+    <table border="1">
+        <tr>
+            <th>Red</th>
+            <th>Orange</th>
+            <th>Yellow</th>
+            <th>Green</th>
+            <th>Blue</th>
+            <th>Purple</th>
+            <th>Pink</th>
+        </tr>
+        <tr>
+            <td bgcolor="#e74c3c">#e74c3c</td>
+            <td bgcolor="#e67e22">#e67e22</td>
+            <td bgcolor="#f1c40f">#f1c40f</td>
+            <td bgcolor="#27ae60">#27ae60</td>
+            <td bgcolor="#3498db">#3498db</td>
+            <td bgcolor="#9b59b6">#9b59b6</td>
+            <td bgcolor="#fd79a8">#fd79a8</td>
+        </tr>
+        <tr>
+            <td bgcolor="#c0392b">#c0392b</td>
+            <td bgcolor="#ffb347">#ffb347</td>
+            <td bgcolor="#fff200">#fff200</td>
+            <td bgcolor="#2ecc71">#2ecc71</td>
+            <td bgcolor="#2980b9">#2980b9</td>
+            <td bgcolor="#8e44ad">#8e44ad</td>
+            <td bgcolor="#e84393">#e84393</td>
+        </tr>
+        <tr>
+            <td bgcolor="#ff7675">#ff7675</td>
+            <td bgcolor="#f6e58d">#f6e58d</td>
+            <td bgcolor="#ffeaa7">#ffeaa7</td>
+            <td bgcolor="#00b894">#00b894</td>
+            <td bgcolor="#00cec9">#00cec9</td>
+            <td bgcolor="#6c5ce7">#6c5ce7</td>
+            <td bgcolor="#fab1a0">#fab1a0</td>
+        </tr>
+    </table>
+</body>
+</html>

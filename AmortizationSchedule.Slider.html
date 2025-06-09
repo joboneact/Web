@@ -1,0 +1,211 @@
+<!-- Amortization Schedule Calculator -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Amortization Schedule Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        label { display: block; margin-top: 1em; }
+        input[type="number"] { width: 120px; }
+        .slider-value { font-weight: bold; margin-left: 1em; }
+        table { border-collapse: collapse; width: 100%; margin-top: 2em; }
+        th, td { border: 1px solid #ddd; padding: 6px; text-align: right; }
+        th { background: #f4f4f4; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        #chart-container { margin-top: 2em; }
+        @media (max-width: 700px) {
+            table, thead, tbody, th, td, tr { display: block; }
+            thead tr { display: none; }
+            tr { margin-bottom: 1em; border: 1px solid #ccc; }
+            td { border: none; border-bottom: 1px solid #eee; position: relative; padding-left: 50%; }
+            td:before {
+                position: absolute; left: 0; width: 45%; padding-left: 10px; font-weight: bold; white-space: nowrap;
+            }
+            td:nth-of-type(1):before { content: "Payment #"; }
+            td:nth-of-type(2):before { content: "Payment"; }
+            td:nth-of-type(3):before { content: "Principal"; }
+            td:nth-of-type(4):before { content: "Interest"; }
+            td:nth-of-type(5):before { content: "Balance"; }
+        }
+    </style>
+</head>
+<body>
+    <h2>Amortization Schedule Calculator</h2>
+    <form id="amortForm" onsubmit="return false;">
+        <label>
+            Loan Amount:
+            <input type="number" id="loanAmount" value="300000" min="1000" max="10000000" step="1000">
+        </label>
+        <label>
+            Interest Rate: 
+            <input type="range" id="interestRate" min="0.5" max="10" step="0.01" value="5">
+            <span class="slider-value" id="interestRateValue">5.00%</span>
+        </label>
+        <label>
+            Number of Payments (Months): 
+            <input type="range" id="numPayments" min="12" max="480" step="1" value="360">
+            <span class="slider-value" id="numPaymentsValue">360</span>
+        </label>
+        <button type="button" onclick="renderSchedule()">Calculate</button>
+    </form>
+    <div id="schedule"></div>
+    <div id="chart-container">
+        <canvas id="barChart" width="800" height="300"></canvas>
+    </div>
+    <script>
+        function formatMoney(n) {
+            return n.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+
+        function renderSchedule() {
+            const loan = parseFloat(document.getElementById('loanAmount').value);
+            const rate = parseFloat(document.getElementById('interestRate').value) / 100 / 12;
+            const nper = parseInt(document.getElementById('numPayments').value, 10);
+
+            // Monthly payment formula
+            const payment = rate === 0
+                ? loan / nper
+                : loan * rate * Math.pow(1 + rate, nper) / (Math.pow(1 + rate, nper) - 1);
+
+            let balance = loan;
+            let html = `<table>
+                <thead>
+                    <tr>
+                        <th>Payment #</th>
+                        <th>Payment</th>
+                        <th>Principal</th>
+                        <th>Interest</th>
+                        <th>Balance</th>
+                    </tr>
+                </thead>
+                <tbody>
+            `;
+
+            // For chart: aggregate principal and interest per year (or per 12th of nper if not 12/24/36/48/60/72/84/96/108/120/132/144/156/168/180/192/204/216/228/240/252/264/276/288/300/312/324/336/348/360/372/384/396/408/420/432/444/456/468/480)
+            let chartLabels = [];
+            let chartPrincipal = [];
+            let chartInterest = [];
+            let principalSum = 0, interestSum = 0;
+            let group = Math.max(1, Math.floor(nper / 12)); // group by year or by 12th of nper
+            let groupCount = Math.ceil(nper / group);
+
+            let principalArr = [];
+            let interestArr = [];
+
+            for (let i = 1; i <= nper; i++) {
+                const interest = balance * rate;
+                const principal = payment - interest;
+                balance -= principal;
+                html += `<tr>
+                    <td>${i}</td>
+                    <td>${formatMoney(payment)}</td>
+                    <td>${formatMoney(principal)}</td>
+                    <td>${formatMoney(interest)}</td>
+                    <td>${formatMoney(Math.max(balance, 0))}</td>
+                </tr>`;
+
+                principalArr.push(principal);
+                interestArr.push(interest);
+
+                // Aggregate for chart
+                principalSum += principal;
+                interestSum += interest;
+                if (i % group === 0 || i === nper) {
+                    chartLabels.push(`Pmt ${i - group + 1}-${i}`);
+                    chartPrincipal.push(principalSum);
+                    chartInterest.push(interestSum);
+                    principalSum = 0;
+                    interestSum = 0;
+                }
+            }
+            html += '</tbody></table>';
+            document.getElementById('schedule').innerHTML = html;
+
+            drawBarChart(chartLabels, chartPrincipal, chartInterest);
+        }
+
+        function drawBarChart(labels, principalData, interestData) {
+            const canvas = document.getElementById('barChart');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Chart settings
+            const chartWidth = canvas.width - 100;
+            const chartHeight = canvas.height - 60;
+            const barWidth = Math.max(10, chartWidth / (labels.length * 2));
+            const gap = barWidth;
+            const maxVal = Math.max(...principalData, ...interestData);
+
+            // Draw axes
+            ctx.strokeStyle = "#333";
+            ctx.beginPath();
+            ctx.moveTo(60, 20);
+            ctx.lineTo(60, 20 + chartHeight);
+            ctx.lineTo(60 + chartWidth, 20 + chartHeight);
+            ctx.stroke();
+
+            // Draw bars
+            for (let i = 0; i < labels.length; i++) {
+                const x = 60 + i * (barWidth * 2 + gap);
+                // Principal bar
+                const pHeight = (principalData[i] / maxVal) * chartHeight;
+                ctx.fillStyle = "#27ae60";
+                ctx.fillRect(x, 20 + chartHeight - pHeight, barWidth, pHeight);
+
+                // Interest bar
+                const iHeight = (interestData[i] / maxVal) * chartHeight;
+                ctx.fillStyle = "#e74c3c";
+                ctx.fillRect(x + barWidth, 20 + chartHeight - iHeight, barWidth, iHeight);
+
+                // Label
+                ctx.save();
+                ctx.translate(x + barWidth, 20 + chartHeight + 10);
+                ctx.rotate(-Math.PI / 4);
+                ctx.textAlign = "right";
+                ctx.font = "10px Arial";
+                ctx.fillStyle = "#333";
+                ctx.fillText(labels[i], 0, 0);
+                ctx.restore();
+            }
+
+            // Y-axis labels
+            ctx.font = "12px Arial";
+            ctx.fillStyle = "#333";
+            ctx.textAlign = "right";
+            for (let i = 0; i <= 5; i++) {
+                const y = 20 + chartHeight - (chartHeight * i / 5);
+                const val = maxVal * i / 5;
+                ctx.fillText(formatMoney(val), 55, y + 4);
+                ctx.beginPath();
+                ctx.strokeStyle = "#eee";
+                ctx.moveTo(60, y);
+                ctx.lineTo(60 + chartWidth, y);
+                ctx.stroke();
+            }
+
+            // Legend
+            ctx.fillStyle = "#27ae60";
+            ctx.fillRect(canvas.width - 180, 10, 16, 16);
+            ctx.fillStyle = "#333";
+            ctx.fillText("Principal", canvas.width - 160, 22);
+            ctx.fillStyle = "#e74c3c";
+            ctx.fillRect(canvas.width - 100, 10, 16, 16);
+            ctx.fillStyle = "#333";
+            ctx.fillText("Interest", canvas.width - 80, 22);
+        }
+
+        // Update slider values
+        document.getElementById('interestRate').addEventListener('input', function() {
+            document.getElementById('interestRateValue').textContent = parseFloat(this.value).toFixed(2) + '%';
+        });
+        document.getElementById('numPayments').addEventListener('input', function() {
+            document.getElementById('numPaymentsValue').textContent = this.value;
+        });
+
+        // Initial render
+        renderSchedule();
+    </script>
+</body>
+</html>

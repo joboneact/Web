@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Responsive User Table</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2em; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background: #f4f4f4; }
+        tr:nth-child(even) { background: #f9f9f9; }
+        input, select { margin: 0.5em 0; padding: 0.3em; }
+        .form-row { margin-bottom: 1em; }
+        /* Responsive styles */
+        @media (max-width: 900px) {
+            table, thead, tbody, th, td, tr { display: block; width: 100%; }
+            thead tr { display: none; }
+            tr { margin-bottom: 1em; border: 1px solid #ccc; }
+            td {
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50%;
+            }
+            td:before {
+                position: absolute;
+                left: 0;
+                width: 45%;
+                padding-left: 10px;
+                font-weight: bold;
+                white-space: nowrap;
+            }
+            td:nth-of-type(1):before { content: "Name"; }
+            td:nth-of-type(2):before { content: "Email"; }
+            td:nth-of-type(3):before { content: "Phone"; }
+            td:nth-of-type(4):before { content: "City"; }
+            td:nth-of-type(5):before { content: "Time Zone"; }
+            td:nth-of-type(6):before { content: "Department"; }
+            td:nth-of-type(7):before { content: "Status"; }
+        }
+    </style>
+</head>
+<body>
+    <h2>Responsive User Table</h2>
+    <form id="userForm">
+        <div class="form-row">
+            <input type="text" id="name" placeholder="Name" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="tel" id="phone" placeholder="Phone" required>
+            <input type="text" id="city" placeholder="City" required>
+            <select id="timezone" required>
+                <option value="">Time Zone</option>
+                <option value="PST">PST</option>
+                <option value="MST">MST</option>
+                <option value="CST">CST</option>
+                <option value="EST">EST</option>
+                <option value="UTC">UTC</option>
+            </select>
+            <input type="text" id="department" placeholder="Department">
+            <select id="status">
+                <option value="">Status</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+            </select>
+            <button type="submit">Add User</button>
+        </div>
+    </form>
+    <table id="userTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>City</th>
+                <th>Time Zone</th>
+                <th>Department</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Alice Smith</td>
+                <td>alice@example.com</td>
+                <td>555-1234</td>
+                <td>Seattle</td>
+                <td>PST</td>
+                <td>HR</td>
+                <td>Active</td>
+            </tr>
+            <tr>
+                <td>Bob Johnson</td>
+                <td>bob@example.com</td>
+                <td>555-5678</td>
+                <td>Denver</td>
+                <td>MST</td>
+                <td>IT</td>
+                <td>Inactive</td>
+            </tr>
+            <tr>
+                <td>Carol Lee</td>
+                <td>carol@example.com</td>
+                <td>555-8765</td>
+                <td>Chicago</td>
+                <td>CST</td>
+                <td>Finance</td>
+                <td>Active</td>
+            </tr>
+            <tr>
+                <td>David Kim</td>
+                <td>david@example.com</td>
+                <td>555-4321</td>
+                <td>New York</td>
+                <td>EST</td>
+                <td>Marketing</td>
+                <td>Active</td>
+            </tr>
+            <tr>
+                <td>Eve Turner</td>
+                <td>eve@example.com</td>
+                <td>555-2468</td>
+                <td>London</td>
+                <td>UTC</td>
+                <td>Sales</td>
+                <td>Inactive</td>
+            </tr>
+            <tr>
+                <td>Frank Miller</td>
+                <td>frank.miller@example.com</td>
+                <td>555-3344</td>
+                <td>San Francisco</td>
+                <td>PST</td>
+                <td>Support</td>
+                <td>Active</td>
+            </tr>
+            <tr>
+                <td>Grace Chen</td>
+                <td>grace.chen@example.com</td>
+                <td>555-7788</td>
+                <td>Houston</td>
+                <td>CST</td>
+                <td>Legal</td>
+                <td>Inactive</td>
+            </tr>
+            <tr>
+                <td>Henry Patel</td>
+                <td>henry.patel@example.com</td>
+                <td>555-9900</td>
+                <td>Miami</td>
+                <td>EST</td>
+                <td>Engineering</td>
+                <td>Active</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
