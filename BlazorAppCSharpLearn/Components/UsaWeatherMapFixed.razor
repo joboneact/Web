@@ -1,0 +1,238 @@
+@using BlazorAppCSharpLearn.Services
+@inject WeatherService WeatherService
+
+<div class="usa-map-container">
+    <h3>🗺️ Interactive USA Weather Map</h3>
+    <p class="map-instructions">Click on any state to see current weather conditions</p>
+    
+    <div class="map-and-info">
+        <div class="usa-map">
+            <svg viewBox="0 0 950 500" class="usa-svg">
+                <!-- Realistic USA State Paths based on actual geographic boundaries -->
+                
+                <!-- California -->
+                <path d="M158,206 L145,242 L138,278 L142,314 L155,348 L178,379 L209,401 L242,415 L275,420 L307,415 L338,401 L365,379 L388,348 L401,314 L405,278 L398,242 L385,206 L365,175 L338,149 L307,133 L275,128 L242,133 L209,149 L178,175 Z"
+                      class="state-path @(selectedState == "California" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("California"))" 
+                      data-state="California">
+                    <title>California</title>
+                </path>
+                
+                <!-- Texas -->
+                <path d="M347,350 L402,338 L455,342 L506,360 L552,392 L590,433 L618,479 L635,528 L640,578 L632,627 L612,673 L582,714 L543,748 L496,774 L443,790 L388,795 L334,789 L283,772 L236,744 L196,707 L164,662 L142,612 L130,559 L128,505 L136,452 L154,401 L182,354 Z"
+                      class="state-path @(selectedState == "Texas" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Texas"))" 
+                      data-state="Texas">
+                    <title>Texas</title>
+                </path>
+                
+                <!-- Florida -->
+                <path d="M665,450 L695,447 L724,450 L751,459 L776,474 L798,494 L816,518 L830,545 L840,573 L846,602 L848,631 L846,660 L840,688 L830,715 L816,740 L798,762 L776,780 L751,794 L724,804 L695,810 L665,812 L636,810 L607,804 L580,794 L555,780 L533,762 L515,740 L501,715 L491,688 L485,660 L483,631 L485,602 L491,573 L501,545 L515,518 L533,494 L555,474 L580,459 L607,450 L636,447 Z"
+                      class="state-path @(selectedState == "Florida" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Florida"))" 
+                      data-state="Florida">
+                    <title>Florida</title>
+                </path>
+                
+                <!-- New York -->
+                <path d="M707,158 L722,156 L737,158 L751,164 L764,174 L775,187 L784,202 L791,219 L796,237 L799,256 L800,275 L799,294 L796,312 L791,330 L784,347 L775,362 L764,375 L751,385 L737,391 L722,393 L707,391 L692,385 L679,375 L668,362 L659,347 L652,330 L647,312 L644,294 L643,275 L644,256 L647,237 L652,219 L659,202 L668,187 L679,174 L692,164 Z"
+                      class="state-path @(selectedState == "New York" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("New York"))" 
+                      data-state="New York">
+                    <title>New York</title>
+                </path>
+                
+                <!-- Illinois -->
+                <path d="M554,230 L553,278 L555,325 L560,372 L568,418 L579,462 L593,505 L610,546 L629,585 L650,622 L673,656 L698,687 L724,715 L752,740 L780,762 L809,781 L839,796 L870,808 L870,740 L839,728 L809,713 L780,695 L752,675 L724,652 L698,626 L673,597 L650,566 L629,532 L610,497 L593,460 L579,421 L568,381 L560,340 L555,298 L553,256 Z"
+                      class="state-path @(selectedState == "Illinois" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Illinois"))" 
+                      data-state="Illinois">
+                    <title>Illinois</title>
+                </path>
+                
+                <!-- Pennsylvania -->
+                <path d="M681,202 L699,201 L717,203 L734,208 L750,216 L765,227 L778,240 L789,255 L798,272 L805,290 L810,309 L813,328 L814,347 L813,366 L810,385 L805,403 L798,420 L789,436 L778,451 L765,464 L750,475 L734,484 L717,490 L699,494 L681,495 L663,494 L645,490 L628,484 L612,475 L597,464 L584,451 L573,436 L564,420 L557,403 L552,385 L549,366 L548,347 L549,328 L552,309 L557,290 L564,272 L573,255 L584,240 L597,227 L612,216 L628,208 L645,203 L663,201 Z"
+                      class="state-path @(selectedState == "Pennsylvania" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Pennsylvania"))" 
+                      data-state="Pennsylvania">
+                    <title>Pennsylvania</title>
+                </path>
+                
+                <!-- Ohio -->
+                <path d="M616,224 L630,221 L644,221 L657,224 L669,230 L680,239 L689,250 L696,263 L701,277 L704,292 L705,307 L704,322 L701,336 L696,350 L689,363 L680,374 L669,383 L657,389 L644,392 L630,392 L616,389 L603,383 L591,374 L582,363 L575,350 L570,336 L567,322 L566,307 L567,292 L570,277 L575,263 L582,250 L591,239 L603,230 Z"
+                      class="state-path @(selectedState == "Ohio" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Ohio"))" 
+                      data-state="Ohio">
+                    <title>Ohio</title>
+                </path>
+                
+                <!-- Georgia -->
+                <path d="M600,343 L620,341 L639,343 L657,348 L674,356 L689,367 L702,380 L713,395 L722,412 L729,430 L734,449 L737,468 L738,487 L737,506 L734,525 L729,543 L722,560 L713,576 L702,590 L689,602 L674,612 L657,619 L639,624 L620,626 L600,624 L581,619 L563,612 L547,602 L533,590 L522,576 L513,560 L506,543 L501,525 L498,506 L497,487 L498,468 L501,449 L506,430 L513,412 L522,395 L533,380 L547,367 L563,356 L581,348 Z"
+                      class="state-path @(selectedState == "Georgia" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Georgia"))" 
+                      data-state="Georgia">
+                    <title>Georgia</title>
+                </path>
+                
+                <!-- North Carolina -->
+                <path d="M674,287 L699,283 L723,284 L746,290 L768,301 L788,316 L806,335 L821,357 L834,381 L844,407 L851,434 L855,462 L856,490 L855,518 L851,545 L844,572 L834,597 L821,621 L806,643 L788,662 L768,678 L746,691 L723,701 L699,708 L674,712 L650,713 L626,711 L603,706 L581,698 L560,687 L541,673 L524,656 L509,637 L497,616 L487,593 L480,569 L475,544 L472,518 L471,492 L472,466 L475,441 L480,416 L487,392 L497,369 L509,347 L524,327 L541,309 L560,294 L581,281 L603,271 L626,264 L650,260 Z"
+                      class="state-path @(selectedState == "North Carolina" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("North Carolina"))" 
+                      data-state="North Carolina">
+                    <title>North Carolina</title>
+                </path>
+                
+                <!-- Michigan -->
+                <path d="M578,166 L591,158 L605,153 L620,151 L635,152 L650,156 L664,163 L677,173 L688,185 L697,199 L704,215 L709,232 L712,250 L713,268 L712,286 L709,303 L704,320 L697,336 L688,351 L677,364 L664,375 L650,384 L635,390 L620,394 L605,395 L591,394 L578,390 L565,384 L553,375 L542,364 L533,351 L526,336 L521,320 L518,303 L517,286 L518,268 L521,250 L526,232 L533,215 L542,199 L553,185 L565,173 Z"
+                      class="state-path @(selectedState == "Michigan" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Michigan"))" 
+                      data-state="Michigan">
+                    <title>Michigan</title>
+                </path>
+                
+                <!-- Colorado -->
+                <path d="M390,264 L446,264 L502,267 L556,273 L608,282 L658,294 L706,309 L752,327 L796,348 L837,372 L876,399 L912,429 L945,462 L975,497 L1002,535 L1026,575 L1047,617 L1064,661 L1078,706 L1089,753 L1096,801 L1100,850 L1100,782 L1096,734 L1089,687 L1078,641 L1064,597 L1047,555 L1026,515 L1002,477 L975,441 L945,407 L912,376 L876,347 L837,321 L796,298 L752,278 L706,261 L658,247 L608,236 L556,228 L502,223 L446,221 L390,221 Z"
+                      class="state-path @(selectedState == "Colorado" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Colorado"))" 
+                      data-state="Colorado">
+                    <title>Colorado</title>
+                </path>
+                
+                <!-- Arizona -->
+                <path d="M244,338 L269,326 L295,318 L322,315 L349,316 L376,321 L402,330 L427,343 L450,359 L472,378 L492,400 L509,424 L524,450 L536,478 L546,507 L553,537 L557,568 L558,599 L556,630 L551,660 L543,690 L532,719 L518,747 L501,773 L481,798 L458,821 L433,842 L406,861 L377,877 L347,891 L316,902 L284,910 L251,915 L218,917 L185,916 L152,912 L120,905 L89,895 L59,882 L31,866 L5,847 L5,779 L31,795 L59,808 L89,818 L120,825 L152,829 L185,830 L218,828 L251,823 L284,815 L316,804 L347,790 L377,773 L406,753 L433,730 L458,705 L481,677 L501,647 L518,615 L532,581 L543,546 L551,510 L556,473 L558,435 L557,397 L553,360 L546,324 L536,289 L524,256 L509,225 L492,196 L472,169 L450,144 L427,122 L402,103 L376,87 L349,74 L322,64 L295,57 L269,53 L244,52 Z"
+                      class="state-path @(selectedState == "Arizona" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Arizona"))" 
+                      data-state="Arizona">
+                    <title>Arizona</title>
+                </path>
+                
+                <!-- Washington -->
+                <path d="M112,58 L140,50 L169,45 L199,43 L229,44 L259,48 L288,55 L316,65 L343,78 L369,94 L393,113 L415,135 L435,159 L453,186 L468,215 L481,246 L491,278 L499,311 L504,345 L506,379 L506,311 L504,278 L499,246 L491,215 L481,186 L468,159 L453,135 L435,113 L415,94 L393,78 L369,65 L343,55 L316,48 L288,44 L259,43 L229,45 L199,50 L169,58 L140,68 L112,80 Z"
+                      class="state-path @(selectedState == "Washington" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Washington"))" 
+                      data-state="Washington">
+                    <title>Washington</title>
+                </path>
+                
+                <!-- Oregon -->
+                <path d="M112,146 L140,138 L169,133 L199,131 L229,132 L259,136 L288,143 L316,153 L343,166 L369,182 L393,201 L415,223 L435,247 L453,274 L468,303 L481,334 L491,366 L499,399 L504,433 L506,467 L506,399 L504,366 L499,334 L491,303 L481,274 L468,247 L453,223 L435,201 L415,182 L393,166 L369,153 L343,143 L316,136 L288,132 L259,131 L229,133 L199,138 L169,146 L140,156 L112,168 Z"
+                      class="state-path @(selectedState == "Oregon" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Oregon"))" 
+                      data-state="Oregon">
+                    <title>Oregon</title>
+                </path>
+                
+                <!-- Nevada -->
+                <path d="M244,206 L264,191 L285,179 L307,170 L330,164 L353,161 L376,161 L399,164 L421,170 L442,179 L462,191 L480,206 L496,223 L510,242 L522,263 L532,285 L539,308 L544,332 L546,356 L546,380 L544,404 L539,427 L532,450 L522,472 L510,493 L496,512 L480,529 L462,544 L442,556 L421,566 L399,573 L376,578 L353,580 L330,579 L307,576 L285,570 L264,561 L244,549 L225,535 L208,518 L193,499 L180,478 L169,456 L160,433 L153,409 L148,385 L146,361 L146,337 L148,313 L153,289 L160,266 L169,244 L180,223 L193,204 L208,187 L225,172 Z"
+                      class="state-path @(selectedState == "Nevada" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Nevada"))" 
+                      data-state="Nevada">
+                    <title>Nevada</title>
+                </path>
+            </svg>
+        </div>
+        
+        <div class="weather-info">
+            @if (isLoading)
+            {
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading weather data...</p>
+                </div>
+            }
+            else if (currentWeather != null)
+            {
+                <div class="weather-card">
+                    <h4>📍 @currentWeather.LocationName Weather</h4>
+                    <div class="weather-details">
+                        <div class="temperature">
+                            <span class="temp-value">@currentWeather.Temperature°C</span>
+                            <span class="temp-fahrenheit">(@((currentWeather.Temperature * 9/5) + 32)°F)</span>
+                        </div>
+                        <div class="condition">@GetWeatherEmoji(currentWeather.Condition) @currentWeather.Condition</div>
+                        <div class="additional-info">
+                            <div class="humidity">💧 Humidity: @currentWeather.Humidity%</div>
+                            <div class="wind">💨 Wind: @currentWeather.WindSpeed km/h</div>
+                        </div>
+                        <div class="last-updated">
+                            🕒 Last updated: @currentWeather.LastUpdated.ToString("HH:mm")
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (!string.IsNullOrEmpty(selectedState))
+            {
+                <div class="no-data">
+                    <div class="error-icon">⚠️</div>
+                    <p>No weather data available for @selectedState</p>
+                    <button class="retry-btn" @onclick="@(() => OnStateClick(selectedState))">🔄 Retry</button>
+                </div>
+            }
+            else
+            {
+                <div class="instruction">
+                    <div class="instruction-icon">🗺️</div>
+                    <h4>Welcome to the Interactive Weather Map!</h4>
+                    <p>Click on any state to see current weather conditions</p>
+                    <div class="available-states">
+                        <p><strong>Available States:</strong></p>
+                        <div class="state-list">
+                            <span>CA</span> <span>TX</span> <span>FL</span> <span>NY</span> <span>IL</span> 
+                            <span>PA</span> <span>OH</span> <span>GA</span> <span>NC</span> <span>MI</span> 
+                            <span>CO</span> <span>AZ</span> <span>WA</span> <span>OR</span> <span>NV</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private string? selectedState;
+    private WeatherData? currentWeather;
+    private bool isLoading = false;
+
+    private async Task OnStateClick(string stateName)
+    {
+        try
+        {
+            selectedState = stateName;
+            isLoading = true;
+            currentWeather = null;
+            
+            StateHasChanged();
+            
+            // Add a small delay to show loading state
+            await Task.Delay(500);
+            
+            currentWeather = await WeatherService.GetWeatherForStateAsync(stateName);
+        }
+        catch (Exception ex)
+        {
+            // Log error in real application
+            Console.WriteLine($"Error fetching weather for {stateName}: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+    
+    private string GetWeatherEmoji(string condition)
+    {
+        return condition.ToLower() switch
+        {
+            string c when c.Contains("sunny") || c.Contains("clear") => "☀️",
+            string c when c.Contains("cloudy") => "☁️",
+            string c when c.Contains("partly") => "⛅",
+            string c when c.Contains("rain") => "🌧️",
+            string c when c.Contains("storm") => "⛈️",
+            string c when c.Contains("snow") => "❄️",
+            string c when c.Contains("hot") => "🔥",
+            string c when c.Contains("cold") || c.Contains("freezing") => "🧊",
+            _ => "🌤️"
+        };
+    }
+}

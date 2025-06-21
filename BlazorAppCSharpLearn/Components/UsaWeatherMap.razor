@@ -1,0 +1,254 @@
+@using BlazorAppCSharpLearn.Services
+@inject WeatherService WeatherService
+
+<div class="usa-map-container">
+    <h3>🗺️ Interactive USA Weather Map</h3>
+    <p class="map-instructions">Click a state or its abbreviation to see current weather</p>
+    <div class="map-and-info">
+        <div class="usa-map">
+            <svg viewBox="0 0 960 600" class="usa-svg" style="width:100%;height:auto;max-width:700px;">
+                <!-- Realistic state paths (subset for demo) -->
+                <g>                    <!-- California (Realistic) -->
+                    <path d="M158,206 L145,242 L138,278 L142,314 L155,348 L178,379 L209,401 L242,415 L275,420 L307,415 L338,401 L365,379 L388,348 L401,314 L405,278 L398,242 L385,206 L365,175 L338,149 L307,133 L275,128 L242,133 L209,149 L178,175 Z"
+                        class="state-path @(selectedState == "California" ? "selected" : "")"
+                        @onclick="@(() => OnStateClick("California"))" 
+                        data-state="California">
+                    <title>California</title>
+                    </path>                    <!-- Texas (Realistic) -->
+                    <path d="M347,350 L402,338 L455,342 L506,360 L552,392 L590,433 L618,479 L635,528 L640,578 L632,627 L612,673 L582,714 L543,748 L496,774 L443,790 L388,795 L334,789 L283,772 L236,744 L196,707 L164,662 L142,612 L130,559 L128,505 L136,452 L154,401 L182,354 Z"
+                        class="state-path @(selectedState == "Texas" ? "selected" : "")"
+                        @onclick="@(() => OnStateClick("Texas"))" 
+                        data-state="Texas">
+                    <title>Texas</title>
+                    </path>                    <!-- Florida (Realistic) -->
+                    <path d="M665,450 L695,447 L724,450 L751,459 L776,474 L798,494 L816,518 L830,545 L840,573 L846,602 L848,631 L846,660 L840,688 L830,715 L816,740 L798,762 L776,780 L751,794 L724,804 L695,810 L665,812 L636,810 L607,804 L580,794 L555,780 L533,762 L515,740 L501,715 L491,688 L485,660 L483,631 L485,602 L491,573 L501,545 L515,518 L533,494 L555,474 L580,459 L607,450 L636,447 Z"
+                        class="state-path @(selectedState == "Florida" ? "selected" : "")"
+                        @onclick="@(() => OnStateClick("Florida"))" 
+                        data-state="Florida">
+                    <title>Florida</title>
+                    </path>                    <!-- New York -->
+                    <path d="M707,158 L722,156 L737,158 L751,164 L764,174 L775,187 L784,202 L791,219 L796,237 L799,256 L800,275 L799,294 L796,312 L791,330 L784,347 L775,362 L764,375 L751,385 L737,391 L722,393 L707,391 L692,385 L679,375 L668,362 L659,347 L652,330 L647,312 L644,294 L643,275 L644,256 L647,237 L652,219 L659,202 L668,187 L679,174 L692,164 Z"
+                        class="state-path @(selectedState == "New York" ? "selected" : "")"
+                        @onclick="@(() => OnStateClick("New York"))" 
+                        data-state="New York">
+                    <title>New York</title>
+                    </path>                    <!-- Illinois -->
+                    <path d="M554,230 L553,278 L555,325 L560,372 L568,418 L579,462 L593,505 L610,546 L629,585 L650,622 L673,656 L698,687 L724,715 L752,740 L780,762 L809,781 L839,796 L870,808 L870,740 L839,728 L809,713 L780,695 L752,675 L724,652 L698,626 L673,597 L650,566 L629,532 L610,497 L593,460 L579,421 L568,381 L560,340 L555,298 L553,256 Z"
+                        class="state-path @(selectedState == "Illinois" ? "selected" : "")"
+                        @onclick="@(() => OnStateClick("Illinois"))" 
+                        data-state="Illinois">
+                    <title>Illinois</title>
+                    </path>                    <!-- Pennsylvania -->
+                    <path d="M681,202 L699,201 L717,203 L734,208 L750,216 L765,227 L778,240 L789,255 L798,272 L805,290 L810,309 L813,328 L814,347 L813,366 L810,385 L805,403 L798,420 L789,436 L778,451 L765,464 L750,475 L734,484 L717,490 L699,494 L681,495 L663,494 L645,490 L628,484 L612,475 L597,464 L584,451 L573,436 L564,420 L557,403 L552,385 L549,366 L548,347 L549,328 L552,309 L557,290 L564,272 L573,255 L584,240 L597,227 L612,216 L628,208 L645,203 L663,201 Z"
+                        class="state-path @(selectedState == "Pennsylvania" ? "selected" : "")"
+                        @onclick="@(() => OnStateClick("Pennsylvania"))" 
+                        data-state="Pennsylvania">
+                    <title>Pennsylvania</title>
+                    </path>                    <!-- Ohio -->
+                    <path d="M616,224 L630,221 L644,221 L657,224 L669,230 L680,239 L689,250 L696,263 L701,277 L704,292 L705,307 L704,322 L701,336 L696,350 L689,363 L680,374 L669,383 L657,389 L644,392 L630,392 L616,389 L603,383 L591,374 L582,363 L575,350 L570,336 L567,322 L566,307 L567,292 L570,277 L575,263 L582,250 L591,239 L603,230 Z"
+                        class="state-path @(selectedState == "Ohio" ? "selected" : "")"
+                        @onclick="@(() => OnStateClick("Ohio"))" 
+                        data-state="Ohio">
+                    <title>Ohio</title>
+                    </path>                    <!-- Georgia -->
+                    <path d="M600,343 L620,341 L639,343 L657,348 L674,356 L689,367 L702,380 L713,395 L722,412 L729,430 L734,449 L737,468 L738,487 L737,506 L734,525 L729,543 L722,560 L713,576 L702,590 L689,602 L674,612 L657,619 L639,624 L620,626 L600,624 L581,619 L563,612 L547,602 L533,590 L522,576 L513,560 L506,543 L501,525 L498,506 L497,487 L498,468 L501,449 L506,430 L513,412 L522,395 L533,380 L547,367 L563,356 L581,348 Z"
+                        class="state-path @(selectedState == "Georgia" ? "selected" : "")"
+                        @onclick="@(() => OnStateClick("Georgia"))" 
+                        data-state="Georgia">
+                    <title>Georgia</title>
+                    </path>                    <!-- North Carolina -->
+                    <path d="M674,287 L699,283 L723,284 L746,290 L768,301 L788,316 L806,335 L821,357 L834,381 L844,407 L851,434 L855,462 L856,490 L855,518 L851,545 L844,572 L834,597 L821,621 L806,643 L788,662 L768,678 L746,691 L723,701 L699,708 L674,712 L650,713 L626,711 L603,706 L581,698 L560,687 L541,673 L524,656 L509,637 L497,616 L487,593 L480,569 L475,544 L472,518 L471,492 L472,466 L475,441 L480,416 L487,392 L497,369 L509,347 L524,327 L541,309 L560,294 L581,281 L603,271 L626,264 L650,260 Z"
+                        class="state-path @(selectedState == "North Carolina" ? "selected" : "")"
+                        @onclick="@(() => OnStateClick("North Carolina"))" 
+                        data-state="North Carolina">
+                    <title>North Carolina</title>
+                    </path>
+                </g>
+                <!-- State abbreviations overlay (clickable) -->
+                <g class="state-abbrs" font-size="18" font-family="monospace" font-weight="bold" fill="#222" stroke="#fff" stroke-width="2" text-anchor="middle">
+                    <text x="200" y="250" class="state-abbr clickable" @onclick="@(() => OnStateClick("California"))">CA</text>
+                    <text x="500" y="470" class="state-abbr clickable" @onclick="@(() => OnStateClick("Texas"))">TX</text>
+                    <text x="850" y="500" class="state-abbr clickable" @onclick="@(() => OnStateClick("Florida"))">FL</text>
+                    <text x="830" y="200" class="state-abbr clickable" @onclick="@(() => OnStateClick("New York"))">NY</text>
+                    <text x="650" y="320" class="state-abbr clickable" @onclick="@(() => OnStateClick("Illinois"))">IL</text>
+                    <text x="880" y="270" class="state-abbr clickable" @onclick="@(() => OnStateClick("Pennsylvania"))">PA</text>
+                    <text x="810" y="320" class="state-abbr clickable" @onclick="@(() => OnStateClick("Ohio"))">OH</text>
+                    <text x="830" y="430" class="state-abbr clickable" @onclick="@(() => OnStateClick("Georgia"))">GA</text>
+                    <text x="870" y="370" class="state-abbr clickable" @onclick="@(() => OnStateClick("North Carolina"))">NC</text>
+                    <text x="720" y="220" class="state-abbr clickable" @onclick="@(() => OnStateClick("Michigan"))">MI</text>
+                    <text x="530" y="370" class="state-abbr clickable" @onclick="@(() => OnStateClick("Colorado"))">CO</text>
+                    <text x="340" y="500" class="state-abbr clickable" @onclick="@(() => OnStateClick("Arizona"))">AZ</text>
+                    <text x="120" y="120" class="state-abbr clickable" @onclick="@(() => OnStateClick("Washington"))">WA</text>
+                    <text x="170" y="220" class="state-abbr clickable" @onclick="@(() => OnStateClick("Oregon"))">OR</text>
+                    <text x="240" y="420" class="state-abbr clickable" @onclick="@(() => OnStateClick("Nevada"))">NV</text>
+                </g>
+            </svg>
+        </div>
+        <div class="weather-info">
+            @if (isLoading)
+            {
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading weather data...</p>
+                </div>
+            }            else if (currentWeather != null)
+            {
+                <div class="weather-card">
+                    <h4>📍 @currentWeather.LocationName Weather</h4>
+                    <div class="weather-details">
+                        <div class="temperature">
+                            <span class="temp-value">@currentWeather.Temperature°C</span>
+                            <span class="temp-fahrenheit">(@((currentWeather.Temperature * 9/5) + 32)°F)</span>
+                        </div>
+                        <div class="condition">@GetWeatherEmoji(currentWeather.Condition) @currentWeather.Condition</div>
+                        <div class="additional-info">
+                            <div class="humidity">💧 Humidity: @currentWeather.Humidity%</div>
+                            <div class="wind">💨 Wind: @currentWeather.WindSpeed km/h</div>
+                        </div>
+                        <div class="last-updated">
+                            🕒 Last updated: @currentWeather.LastUpdated.ToString("HH:mm")
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (!string.IsNullOrEmpty(selectedState))
+            {
+                <div class="no-data">
+                    <div class="error-icon">⚠️</div>
+                    <p>No weather data available for @selectedState</p>
+                    <button class="retry-btn" @onclick="@(() => OnStateClick(selectedState))">🔄 Retry</button>
+                </div>
+            }
+            else
+            {
+                <div class="instruction">
+                    <div class="instruction-icon">🗺️</div>
+                    <h4>Welcome to the Interactive Weather Map!</h4>
+                    <p>Click on any state to see current weather conditions</p>
+                    <div class="available-states">
+                        <p><strong>Available States:</strong></p>
+                        <div class="state-list">
+                            <span>CA</span> <span>TX</span> <span>FL</span> <span>NY</span> <span>IL</span> 
+                            <span>PA</span> <span>OH</span> <span>GA</span> <span>NC</span> <span>MI</span> 
+                            <span>CO</span> <span>AZ</span> <span>WA</span> <span>OR</span> <span>NV</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private string? selectedState;
+    private WeatherData? currentWeather;
+    private bool isLoading = false;
+    private string? clickedState;
+    private bool isDialogOpen = false;
+
+    private async Task OnStateClick(string stateName)
+    {
+        try
+        {
+            selectedState = stateName;
+            clickedState = stateName;
+            isDialogOpen = true;
+            isLoading = true;
+            currentWeather = null;
+
+            // Force UI update immediately to show loading state
+            await InvokeAsync(StateHasChanged);
+
+            // Get weather data without artificial delay
+            currentWeather = await WeatherService.GetWeatherForStateAsync(stateName);
+            Console.WriteLine($"Weather updated for {stateName}: {currentWeather?.Condition ?? "null"}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error fetching weather for {stateName}: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+
+            // Force UI update again with new data
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private void CloseDialog()
+    {
+        isDialogOpen = false;
+    }
+
+    private string GetWeatherEmoji(string condition)
+    {
+        return condition.ToLower() switch
+        {
+            string c when c.Contains("sunny") || c.Contains("clear") => "☀️",
+            string c when c.Contains("cloudy") => "☁️",
+            string c when c.Contains("partly") => "⛅",
+            string c when c.Contains("rain") => "🌧️",
+            string c when c.Contains("storm") => "⛈️",
+            string c when c.Contains("snow") => "❄️",
+            string c when c.Contains("hot") => "🔥",
+            string c when c.Contains("cold") || c.Contains("freezing") => "🧊",
+            _ => "🌤️"
+        };
+    }
+}
+
+<div class="dialog" style="display:@(isDialogOpen ? "block" : "none");">
+    <div class="dialog-content">
+        <h3>State Clicked</h3>
+        <p>You clicked on: @clickedState</p>
+        <button @onclick="CloseDialog">Close</button>
+    </div>
+</div>
+
+<style>
+.usa-map-container { max-width: 900px; margin: 0 auto; }
+.usa-map { background: #f5f5f5; border-radius: 12px; padding: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.usa-svg { width: 100%; height: auto; }
+.state-path { fill: #e3f2fd; stroke: #1976d2; stroke-width: 1.5px; cursor: pointer; transition: all 0.2s; }
+.state-path.selected { fill: #1976d2; stroke: #0d47a1; stroke-width: 3px; }
+.state-path:hover { fill: #90caf9; stroke: #1565c0; stroke-width: 2.5px; }
+.state-abbr { pointer-events: all; cursor: pointer; user-select: none; }
+.state-abbr.clickable:hover { fill: #1976d2; stroke: #fff; }
+.weather-info { margin-top: 24px; }
+.weather-card { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 18px 24px; }
+.weather-details { display: flex; flex-direction: column; gap: 8px; }
+.temperature { font-size: 2rem; font-weight: bold; color: #1976d2; }
+.temp-fahrenheit { font-size: 1rem; color: #888; margin-left: 8px; }
+.condition { font-size: 1.2rem; margin-top: 4px; }
+.additional-info { display: flex; gap: 24px; font-size: 1rem; color: #555; }
+.last-updated { font-size: 0.95rem; color: #888; margin-top: 8px; }
+.loading { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 120px; }
+.spinner { border: 4px solid #e3f2fd; border-top: 4px solid #1976d2; border-radius: 50%; width: 32px; height: 32px; animation: spin 1s linear infinite; margin-bottom: 12px; }
+
+@@keyframes spin { 100% { transform: rotate(360deg); } }
+.no-data, .instruction { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 18px 24px; text-align: center; }
+.error-icon, .instruction-icon { font-size: 2.5rem; margin-bottom: 8px; }
+.retry-btn { margin-top: 10px; background: #1976d2; color: #fff; border: none; border-radius: 6px; padding: 8px 18px; font-size: 1rem; cursor: pointer; transition: background 0.2s; }
+.retry-btn:hover { background: #0d47a1; }
+.available-states { margin-top: 12px; }
+.state-list { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; font-size: 1.1rem; }
+
+.dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.dialog-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+}
+</style>

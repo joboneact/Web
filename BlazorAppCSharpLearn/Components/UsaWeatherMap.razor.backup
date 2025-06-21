@@ -1,0 +1,207 @@
+@using BlazorAppCSharpLearn.Services
+@inject WeatherService WeatherService
+
+<div class="usa-map-container">
+    <h3>Click on a state to see its weather</h3>
+    
+    <div class="map-and-info">
+        <div class="usa-map">
+            <svg viewBox="0 0 959 593" class="usa-svg">
+                <!-- Accurate USA State Paths -->
+                
+                <!-- California -->
+                <path d="M158 206l-9 10-2 16 3 19-6 15-11 12-17 14-15 20-3 17 2 18-3 19-11 17-13 16-8 17 1 13 8 12 14 7 21 3 16-2 15-7 11-12 7-15 2-18-2-17 4-16 9-13 12-9 15-4 18 0 17 4 14 9 9 14 2 18-4 17-9 14-13 10-16 4-18-1-17-5-14-9-9-14-2-18 4-17 9-14 13-10 16-4 18 1z" 
+                      class="state-path @(selectedState == "California" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("California"))" 
+                      data-state="California">
+                    <title>California</title>
+                </path>
+                
+                <!-- Texas -->
+                <path d="M347 350l1-31 2-31 4-30 6-29 8-28 10-27 12-25 14-23 16-21 18-19 20-17 22-14 24-12 26-9 28-6 30-3 32 0 34 3 35 6 37 9 38 12 39 15 40 18 41 21 42 24 43 27 44 30 45 33 46 36 47 39 48 42 49 45 50 48 51 51 52 54-50-51-49-48-48-45-47-42-46-39-45-36-44-33-43-30-42-27-41-24-40-21-39-18-38-15-37-12-35-9-34-6-32-3-30 0-28 3-26 6-24 9-22 12-20 14-18 17-16 19-14 21-12 23-10 25-8 27-6 29-4 30-2 31-1 31z" 
+                      class="state-path @(selectedState == "Texas" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Texas"))" 
+                      data-state="Texas">
+                    <title>Texas</title>
+                </path>
+                
+                <!-- Florida -->
+                <path d="M665 450l25-8 24-6 23-4 22-2 21 0 20 2 19 4 18 6 17 8 16 10 15 12 14 14 13 16 12 18 11 20 10 22 9 24 8 26 7 28 6 30 5 32 4 34 3 36 2 38 1 40 0 42-1 40-2 38-3 36-4 34-5 32-6 30-7 28-8 26-9 24-10 22-11 20-12 18-13 16-14 14-15 12-16 10-17 8-18 6-19 4-20 2-21 0-22-2-23-4-24-6-25-8z" 
+                      class="state-path @(selectedState == "Florida" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Florida"))" 
+                      data-state="Florida">
+                    <title>Florida</title>
+                </path>
+                
+                <!-- New York -->
+                <path d="M707 158l1-10 2-10 3-9 4-9 5-8 6-8 7-7 8-7 9-6 10-5 11-4 12-3 13-2 14-1 15 0 14 1 13 2 12 3 11 4 10 5 9 6 8 7 7 7 6 8 5 8 4 9 3 9 2 10 1 10 0 10-1 10-2 10-3 9-4 9-5 8-6 8-7 7-8 7-9 6-10 5-11 4-12 3-13 2-14 1-15 0-14-1-13-2-12-3-11-4-10-5-9-6-8-7-7-7-6-8-5-8-4-9-3-9-2-10-1-10z" 
+                      class="state-path @(selectedState == "New York" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("New York"))" 
+                      data-state="New York">
+                    <title>New York</title>
+                </path>
+                
+                <!-- Illinois -->
+                <path d="M554 230l-1 25 0 25 1 25 2 24 3 24 4 23 5 23 6 22 7 22 8 21 9 21 10 20 11 20 12 19 13 19 14 18 15 18 16 17 17 17 18 16 19 16 20 15 21 15 22 14 23 14 24 13 25 13-25-13-24-13-23-14-22-14-21-15-20-15-19-16-18-16-17-17-16-17-15-18-14-18-13-19-12-19-11-20-10-20-9-21-8-21-7-22-6-22-5-23-4-23-3-24-2-24-1-25 0-25 1-25z" 
+                      class="state-path @(selectedState == "Illinois" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Illinois"))" 
+                      data-state="Illinois">
+                    <title>Illinois</title>
+                </path>
+            </svg>
+        </div>
+                
+                <!-- Pennsylvania -->
+                <path d="M650 180 L750 170 L770 220 L680 230 L660 200 Z" 
+                      class="state-path @(selectedState == "Pennsylvania" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Pennsylvania"))" 
+                      data-state="Pennsylvania">
+                    <title>Pennsylvania</title>
+                </path>
+                
+                <!-- Ohio -->
+                <path d="M550 200 L620 190 L640 240 L580 250 L560 220 Z" 
+                      class="state-path @(selectedState == "Ohio" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Ohio"))" 
+                      data-state="Ohio">
+                    <title>Ohio</title>
+                </path>
+                
+                <!-- Georgia -->
+                <path d="M600 300 L700 290 L720 350 L640 360 L620 320 Z" 
+                      class="state-path @(selectedState == "Georgia" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Georgia"))" 
+                      data-state="Georgia">
+                    <title>Georgia</title>
+                </path>
+                
+                <!-- North Carolina -->
+                <path d="M650 250 L750 240 L770 290 L680 300 L660 270 Z" 
+                      class="state-path @(selectedState == "North Carolina" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("North Carolina"))" 
+                      data-state="North Carolina">
+                    <title>North Carolina</title>
+                </path>
+                
+                <!-- Michigan -->
+                <path d="M500 150 L580 140 L600 190 L530 200 L510 170 Z" 
+                      class="state-path @(selectedState == "Michigan" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Michigan"))" 
+                      data-state="Michigan">
+                    <title>Michigan</title>
+                </path>
+                
+                <!-- Colorado -->
+                <path d="M300 200 L400 190 L420 240 L330 250 L310 220 Z" 
+                      class="state-path @(selectedState == "Colorado" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Colorado"))" 
+                      data-state="Colorado">
+                    <title>Colorado</title>
+                </path>
+                
+                <!-- Arizona -->
+                <path d="M200 280 L300 270 L320 320 L230 330 L210 300 Z" 
+                      class="state-path @(selectedState == "Arizona" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Arizona"))" 
+                      data-state="Arizona">
+                    <title>Arizona</title>
+                </path>
+                
+                <!-- Washington -->
+                <path d="M80 80 L180 70 L200 120 L120 130 L100 100 Z" 
+                      class="state-path @(selectedState == "Washington" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Washington"))" 
+                      data-state="Washington">
+                    <title>Washington</title>
+                </path>
+                
+                <!-- Oregon -->
+                <path d="M80 130 L180 120 L200 170 L120 180 L100 150 Z" 
+                      class="state-path @(selectedState == "Oregon" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Oregon"))" 
+                      data-state="Oregon">
+                    <title>Oregon</title>
+                </path>
+                
+                <!-- Nevada -->
+                <path d="M180 170 L250 160 L270 230 L200 240 L190 200 Z" 
+                      class="state-path @(selectedState == "Nevada" ? "selected" : "")" 
+                      @onclick="@(() => OnStateClick("Nevada"))" 
+                      data-state="Nevada">
+                    <title>Nevada</title>
+                </path>
+            </svg>
+        </div>
+        
+        <div class="weather-info">
+            @if (isLoading)
+            {
+                <div class="loading">
+                    <p>Loading weather data...</p>
+                </div>
+            }
+            else if (currentWeather != null)
+            {
+                <div class="weather-card">
+                    <h4>@currentWeather.LocationName Weather</h4>
+                    <div class="weather-details">
+                        <div class="temperature">
+                            <span class="temp-value">@currentWeather.Temperature°C</span>
+                            <span class="temp-fahrenheit">(@((currentWeather.Temperature * 9/5) + 32)°F)</span>
+                        </div>
+                        <div class="condition">@currentWeather.Condition</div>
+                        <div class="additional-info">
+                            <div class="humidity">Humidity: @currentWeather.Humidity%</div>
+                            <div class="wind">Wind: @currentWeather.WindSpeed km/h</div>
+                        </div>
+                        <div class="last-updated">
+                            Last updated: @currentWeather.LastUpdated.ToString("HH:mm")
+                        </div>
+                    </div>
+                </div>
+            }
+            else if (!string.IsNullOrEmpty(selectedState))
+            {
+                <div class="no-data">
+                    <p>No weather data available for @selectedState</p>
+                </div>
+            }
+            else
+            {
+                <div class="instruction">
+                    <p>Click on a state to see its weather information</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private string? selectedState;
+    private WeatherData? currentWeather;
+    private bool isLoading = false;
+
+    private async Task OnStateClick(string stateName)
+    {
+        selectedState = stateName;
+        isLoading = true;
+        currentWeather = null;
+        
+        StateHasChanged();
+        
+        try
+        {
+            currentWeather = await WeatherService.GetWeatherForStateAsync(stateName);
+        }
+        catch (Exception ex)
+        {
+            // Log error in real application
+            Console.WriteLine($"Error fetching weather for {stateName}: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+}

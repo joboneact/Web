@@ -1,0 +1,132 @@
+@page "/top-movies"
+@using BlazorAppCSharpLearn.Services
+@using System.Linq
+@inject MovieService MovieService
+
+<h3>🎥 Top 50 Movies of 2025</h3>
+
+@if (movies == null)
+{
+    <p>Loading movies...</p>
+}
+else
+{
+    <table class="movie-table">
+        <thead>
+            <tr>
+                <th @onclick="() => SortMoviesByColumn(nameof(Movie.Rank))">
+                    Rank @(sortColumn == nameof(Movie.Rank) ? sortAscending ? "▲" : "▼" : "")
+                </th>
+                <th @onclick="() => SortMoviesByColumn(nameof(Movie.Title))">
+                    Title @(sortColumn == nameof(Movie.Title) ? sortAscending ? "▲" : "▼" : "")
+                </th>
+                <th @onclick="() => SortMoviesByColumn(nameof(Movie.Year))">
+                    Year @(sortColumn == nameof(Movie.Year) ? sortAscending ? "▲" : "▼" : "")
+                </th>
+                <th @onclick="() => SortMoviesByColumn(nameof(Movie.Budget))">
+                    Budget @(sortColumn == nameof(Movie.Budget) ? sortAscending ? "▲" : "▼" : "")
+                </th>
+                <th @onclick="() => SortMoviesByColumn(nameof(Movie.GrossRevenue))">
+                    Gross Revenue @(sortColumn == nameof(Movie.GrossRevenue) ? sortAscending ? "▲" : "▼" : "")
+                </th>
+                <th @onclick="() => SortMoviesByColumn(nameof(Movie.Director))">
+                    Director @(sortColumn == nameof(Movie.Director) ? sortAscending ? "▲" : "▼" : "")
+                </th>
+                <th>Top Stars</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var movie in movies)
+            {
+                <tr>
+                    <td>@movie.Rank</td>
+                    <td>@movie.Title</td>
+                    <td>@movie.Year</td>
+                    <td>@movie.Budget</td>
+                    <td>@movie.GrossRevenue</td>
+                    <td>@movie.Director</td>
+                    <td>@string.Join(", ", movie.TopStars)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Movie>? movies;
+    private string? sortColumn;
+    private bool sortAscending = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        movies = await MovieService.GetTopMoviesAsync();
+    }
+
+    private void SortMoviesByColumn(string columnName)
+    {
+        if (sortColumn == columnName)
+        {
+            sortAscending = !sortAscending;
+        }
+        else
+        {
+            sortColumn = columnName;
+            sortAscending = true;
+        }
+
+        if (movies != null)
+        {
+            switch (columnName)
+            {
+                case nameof(Movie.Rank):
+                    movies = sortAscending 
+                        ? movies.OrderBy(m => m.Rank).ToList() 
+                        : movies.OrderByDescending(m => m.Rank).ToList();
+                    break;
+                case nameof(Movie.Title):
+                    movies = sortAscending 
+                        ? movies.OrderBy(m => m.Title).ToList() 
+                        : movies.OrderByDescending(m => m.Title).ToList();
+                    break;
+                case nameof(Movie.Year):
+                    movies = sortAscending 
+                        ? movies.OrderBy(m => m.Year).ToList() 
+                        : movies.OrderByDescending(m => m.Year).ToList();
+                    break;
+                case nameof(Movie.Budget):
+                    movies = sortAscending 
+                        ? movies.OrderBy(m => m.Budget).ToList() 
+                        : movies.OrderByDescending(m => m.Budget).ToList();
+                    break;
+                case nameof(Movie.GrossRevenue):
+                    movies = sortAscending 
+                        ? movies.OrderBy(m => m.GrossRevenue).ToList() 
+                        : movies.OrderByDescending(m => m.GrossRevenue).ToList();
+                    break;
+                case nameof(Movie.Director):
+                    movies = sortAscending 
+                        ? movies.OrderBy(m => m.Director).ToList() 
+                        : movies.OrderByDescending(m => m.Director).ToList();
+                    break;
+            }
+        }
+    }
+}
+
+<style>
+.movie-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+.movie-table th, .movie-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+.movie-table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+    cursor: pointer;
+}
+</style>

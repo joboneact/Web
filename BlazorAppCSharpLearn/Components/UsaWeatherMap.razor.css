@@ -1,0 +1,139 @@
+.usa-map-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.map-and-info {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.usa-map {
+    flex: 2;
+    min-width: 600px;
+}
+
+.usa-svg {
+    width: 100%;
+    height: auto;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+}
+
+.state-path {
+    fill: #e3f2fd;
+    stroke: #1976d2;
+    stroke-width: 2;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.state-path:hover {
+    fill: #bbdefb;
+    stroke: #0d47a1;
+    stroke-width: 3;
+}
+
+.state-path.selected {
+    fill: #2196f3;
+    stroke: #0d47a1;
+    stroke-width: 3;
+}
+
+.weather-info {
+    flex: 1;
+    min-width: 300px;
+}
+
+.weather-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+}
+
+.weather-card h4 {
+    margin: 0 0 20px 0;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.temperature {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.temp-value {
+    font-size: 3rem;
+    font-weight: bold;
+    display: block;
+}
+
+.temp-fahrenheit {
+    font-size: 1.2rem;
+    opacity: 0.8;
+}
+
+.condition {
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+.additional-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.humidity, .wind {
+    background: rgba(255,255,255,0.2);
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.last-updated {
+    text-align: center;
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+.loading, .no-data, .instruction {
+    background: #f8f9fa;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: center;
+    border: 2px dashed #ddd;
+}
+
+.loading {
+    color: #666;
+}
+
+.no-data {
+    color: #dc3545;
+}
+
+.instruction {
+    color: #28a745;
+}
+
+@media (max-width: 768px) {
+    .map-and-info {
+        flex-direction: column;
+    }
+    
+    .usa-map {
+        min-width: auto;
+    }
+    
+    .weather-info {
+        min-width: auto;
+    }
+}

@@ -1,0 +1,115 @@
+﻿@page "/weather"
+@attribute [StreamRendering]
+@using BlazorAppCSharpLearn.Services
+
+<PageTitle>USA Weather Map</PageTitle>
+
+<h1>USA Weather Map</h1>
+
+<div class="weather-sections">    <!-- Interactive USA Map Section -->
+    <section class="map-section">
+        <UsaWeatherMap />
+    </section>
+    
+    <!-- Original Weather Forecast Table Section -->
+    <section class="forecast-section">
+        <h2>5-Day Forecast Sample</h2>
+        <p>This component demonstrates showing sample forecast data.</p>
+
+        @if (forecasts == null)
+        {
+            <p><em>Loading...</em></p>
+        }
+        else
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th aria-label="Temperature in Celsius">Temp. (C)</th>
+                        <th aria-label="Temperature in Farenheit">Temp. (F)</th>
+                        <th>Summary</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var forecast in forecasts)
+                    {
+                        <tr>
+                            <td>@forecast.Date.ToShortDateString()</td>
+                            <td>@forecast.TemperatureC</td>
+                            <td>@forecast.TemperatureF</td>
+                            <td>@forecast.Summary</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </section>
+</div>
+
+<style>
+    .weather-sections {
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+    
+    .map-section {
+        background: white;
+        border-radius: 12px;
+        padding: 0;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .forecast-section {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .forecast-section h2 {
+        color: #333;
+        margin-bottom: 15px;
+    }
+    
+    .table {
+        margin-top: 20px;
+    }
+    
+    .table th {
+        background-color: #f8f9fa;
+        border-top: none;
+    }
+    
+    .table tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+</style>
+
+@code {
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulate asynchronous loading to demonstrate streaming rendering
+        await Task.Delay(500);
+
+        var startDate = DateOnly.FromDateTime(DateTime.Now);
+        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
+        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        {
+            Date = startDate.AddDays(index),
+            TemperatureC = Random.Shared.Next(-20, 55),
+            Summary = summaries[Random.Shared.Next(summaries.Length)]
+        }).ToArray();
+    }
+
+    private class WeatherForecast
+    {
+        public DateOnly Date { get; set; }
+        public int TemperatureC { get; set; }
+        public string? Summary { get; set; }
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+}
