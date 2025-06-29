@@ -1,0 +1,6 @@
+
+
+Error saving image: A generic error occurred in GDI+.
+
+
+Controlled folder access blocked.

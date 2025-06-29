@@ -1,0 +1,61 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    PropertyGroup: Defines global project properties.
+    - OutputType: 'WinExe' specifies a Windows GUI application (not a console app).
+    - TargetFramework: Targets .NET 8 for Windows with WPF support.
+    - UseWPF: Enables WPF build features and XAML compilation.
+    - Nullable: Enables nullable reference types for safer code.
+    - ApplicationManifest: Specifies the application manifest file for Windows settings (e.g., DPI awareness, requestedExecutionLevel).
+    - GenerateAssemblyInfo: Auto-generates assembly info attributes unless you provide your own.
+    - AssemblyTitle, AssemblyDescription, etc.: Metadata for the built assembly (shown in file properties and about dialogs).
+  -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <AssemblyTitle>Date Watermark Tool</AssemblyTitle>
+    <AssemblyDescription>A tool for adding date watermarks to images</AssemblyDescription>
+    <AssemblyCompany>Your Company</AssemblyCompany>
+    <AssemblyProduct>Date Watermark Tool</AssemblyProduct>
+    <AssemblyCopyright>Copyright © 2025</AssemblyCopyright>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+  </PropertyGroup>
+
+  <!--
+    ItemGroup: Excludes all files under the 'ImageGenerator' folder from compilation, embedding, and XAML processing.
+    - Useful if you want to keep sample or generator code in the repo but not include it in the build.
+  -->
+  <ItemGroup>
+    <Compile Remove="ImageGenerator\**" />
+    <EmbeddedResource Remove="ImageGenerator\**" />
+    <None Remove="ImageGenerator\**" />
+    <Page Remove="ImageGenerator\**" />
+  </ItemGroup>
+
+  <!--
+    ItemGroup: Adds NuGet package reference for System.Drawing.Common.
+    - Required for image processing (e.g., in PowerShell scripts or .NET code).
+    - Note: System.Drawing.Common is only fully supported on Windows.
+  -->
+  <ItemGroup>
+    <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
+  </ItemGroup>
+
+  <!--
+    ItemGroup: (Commented out) Example of how to explicitly include a XAML page.
+    - Normally, WPF projects auto-include *.xaml files, so this is not needed unless customizing build behavior.
+    - The Generator and SubType elements help with XAML code generation and designer support.
+  -->
+  <ItemGroup>
+    <!--<Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>-->
+  </ItemGroup>
+
+</Project>
